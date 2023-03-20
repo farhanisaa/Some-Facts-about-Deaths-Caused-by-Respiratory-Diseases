@@ -1,0 +1,69 @@
+# checking whether the STRICT_TRANS_TABLES mode is enabled
+SHOW VARIABLES LIKE 'sql_mode';
+
+# disabling strict mode
+# to avoid error in INSERT INTO syntax
+SET sql_mode='';
+
+# creating table of annual deaths by cause
+CREATE TABLE annual_deaths_by_cause(
+	country VARCHAR (100) NOT NULL,
+	country_code VARCHAR (5)NOT NULL,
+	record_year YEAR NOT NULL,
+	number_of_execution INT NOT NULL,
+	meningitis INT NOT NULL,
+	alzheimer_dementia INT NOT NULL,
+	parkinson INT NOT NULL, 
+ 	nutritional_deficiency INT NOT NULL,
+	malaria INT NOT NULL,
+	drowning INT NOT NULL,
+ 	interpersonal_violence INT NOT NULL,
+	maternal_disorder INT NOT NULL,
+	HIV_AIDS INT NOT NULL,
+	drugs_use_disorder INT NOT NULL,
+	tuberculosis INT NOT NULL,
+ 	cardiovascular_disease INT NOT NULL,
+  	respiratory_infection INT NOT NULL,
+	neonatal_disorder INT NOT NULL,
+	alcohol_use_disorder INT NOT NULL,
+	self_harm INT NOT NULL,
+	force_of_nature INT NOT NULL,
+	diarrheal_disease INT NOT NULL,
+	heat_cold_exposure INT NOT NULL,
+	neoplasms INT NOT NULL,
+	conflict_terrorism INT NOT NULL,
+      	diabetes_mellitus INT NOT NULL,
+        chronic_kidney INT NOT NULL,
+	poisoning INT NOT NULL,
+	protein_malnutrition INT NOT NULL,
+	terrorism INT NOT NULL,
+	road_injury INT NOT NULL,
+	chronic_respiratory INT NOT NULL,
+	chronic_liver INT NOT NULL,
+	digestive_disease INT NOT NULL,
+	hot_substance INT NOT NULL,
+	acute_hepatitis INT NOT NULL
+)ENGINE = InnoDB;
+
+# adding new column
+ALTER TABLE annual_deaths_by_cause
+  ADD country_year VARCHAR (100) NOT NULL;
+# modifying country_year column null constraint
+ ALTER TABLE annual_deaths_by_cause
+MODIFY country_year VARCHAR (100) NULL;
+
+# filling the primary key column with country and year value
+# INI CONCATENATE YANG BERHASIL BUAT ISI country_year -- it's better to use CONCATENATE_WS instead of CONCATENATE
+UPDATE annual_deaths_by_cause
+   SET country_year = CONCAT_WS('_', country, record_year)
+ WHERE country_year = '';
+ 
+ # adding primary key into table annual deaths by cause
+ALTER TABLE annual_deaths_by_cause
+  ADD PRIMARY KEY (country_year);
+ 
+# clear all data from table annual deaths by cause
+DELETE 
+  FROM annual_deaths_by_cause
+ WHERE country = '' 
+   AND country_code = '';
