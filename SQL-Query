@@ -67,3 +67,30 @@ DELETE
   FROM annual_deaths_by_cause
  WHERE country = '' 
    AND country_code = '';
+
+# checking column content of country_year
+SELECT country_year
+  FROM annual_deaths_by_cause
+ ORDER BY 1 ASC;
+
+# checking table content of annual deaths by cause
+SELECT *
+  FROM annual_deaths_by_cause;
+  
+ # showing total of deaths caused by neoplasms from top 10 country  
+ SELECT DISTINCT(country),
+        SUM(neoplasms)
+   FROM annual_deaths_by_cause
+  GROUP BY 1
+  ORDER BY 2 DESC
+  LIMIT 10;
+  
+# crosschecking which data that didn't transferred properly from csv to sql
+SELECT DISTINCT(country),
+       COUNT(country)
+  FROM annual_deaths_by_cause
+ GROUP BY 1
+ ORDER BY 1 ASC;
+ 
+SELECT COUNT(country)
+  FROM annual_deaths_by_cause;
