@@ -1,11 +1,11 @@
-# checking whether the STRICT_TRANS_TABLES mode is enabled
+-- checking whether the STRICT_TRANS_TABLES mode is enabled
 SHOW VARIABLES LIKE 'sql_mode';
 
-# disabling strict mode
-# to avoid error in INSERT INTO syntax
+-- disabling strict mode
+-- to avoid error in INSERT INTO syntax
 SET sql_mode='';
 
-# creating table of annual deaths by cause
+-- creating table of annual deaths by cause
 CREATE TABLE annual_deaths_by_cause(
 	country VARCHAR (100) NOT NULL,
 	country_code VARCHAR (5)NOT NULL,
@@ -45,39 +45,39 @@ CREATE TABLE annual_deaths_by_cause(
 	acute_hepatitis INT NOT NULL
 )ENGINE = InnoDB;
 
-# adding new column
+-- adding new column
 ALTER TABLE annual_deaths_by_cause
   ADD country_year VARCHAR (100) NOT NULL;
-# modifying country_year column null constraint
+-- modifying country_year column null constraint
  ALTER TABLE annual_deaths_by_cause
 MODIFY country_year VARCHAR (100) NULL;
 
-# filling the primary key column with country and year value
-# INI CONCATENATE YANG BERHASIL BUAT ISI country_year -- it's better to use CONCATENATE_WS instead of CONCATENATE
+-- filling the primary key column with country and year value
+-- it's better to use CONCATENATE_WS instead of CONCATENATE
 UPDATE annual_deaths_by_cause
    SET country_year = CONCAT_WS('_', country, record_year)
  WHERE country_year = '';
  
- # adding primary key into table annual deaths by cause
+-- adding primary key into table annual deaths by cause
 ALTER TABLE annual_deaths_by_cause
   ADD PRIMARY KEY (country_year);
  
-# clear all data from table annual deaths by cause
+-- clear all data from table annual deaths by cause
 DELETE 
   FROM annual_deaths_by_cause
  WHERE country = '' 
    AND country_code = '';
 
-# checking column content of country_year
+-- checking column content of country_year
 SELECT country_year
   FROM annual_deaths_by_cause
  ORDER BY 1 ASC;
 
-# checking table content of annual deaths by cause
+-- checking table content of annual deaths by cause
 SELECT *
   FROM annual_deaths_by_cause;
   
- # showing total of deaths caused by neoplasms from top 10 country  
+ -- showing total of deaths caused by neoplasms from top 10 country  
  SELECT DISTINCT(country),
         SUM(neoplasms)
    FROM annual_deaths_by_cause
@@ -85,7 +85,7 @@ SELECT *
   ORDER BY 2 DESC
   LIMIT 10;
   
-# crosschecking which data that didn't transferred properly from csv to sql
+-- crosschecking which data that didn't transferred properly from csv to sql
 SELECT DISTINCT(country),
        COUNT(country)
   FROM annual_deaths_by_cause
